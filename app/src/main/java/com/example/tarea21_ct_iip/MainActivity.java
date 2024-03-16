@@ -20,6 +20,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 import android.widget.VideoView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnRecord.setOnClickListener(v -> dispatchTakeVideoIntent());
         btnSave.setOnClickListener(v -> saveVideo());
+
+        Permisos();
     }
 
     private void saveVideo() {
@@ -64,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
                     mediaScanIntent.setData(Uri.fromFile(destination));
                     sendBroadcast(mediaScanIntent);
                 }
+
+                Toast.makeText(getApplicationContext(), "Video guardado correctamente!", Toast.LENGTH_SHORT).show();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -77,8 +83,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dispatchTakeVideoIntent() {
-        Permisos();
-
         Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, REQUEST_VIDEO_CAPTURE);
